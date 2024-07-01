@@ -1,0 +1,44 @@
+.sidebar {
+    position: absolute;
+    top: 0vw;
+    left: calc(min(-20vw, -242px) - 20px);
+    height: 100%;
+    width: 20vw;
+    min-width: 242px;
+    border: 0;
+    padding: 15px 10px;
+    transition: left 0.3s ease-in-out;
+    background-color:#747474;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.search-input {
+    border: 0;
+    flex: 1;
+    padding: 10px;
+    height: 40px;
+    box-sizing: border-box;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.close-button {
+    border: 0;
+    width: 40px; 
+    height: 40px;
+    padding: 0;
+    background-color: rgb(59, 59, 59);
+    border-radius: 0px;
+    cursor: pointer;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

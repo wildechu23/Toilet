@@ -1,0 +1,18 @@
+.star {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+}
+
+.star.full {
+    background-image: url('./assets/star/full_star.png');
+}
+
+.star.half {
+    background-image: url('./assets/star/half_star.png');
+}
+
+.star.empty {
+    background-image: url('./assets/star/empty_star.png');
+}

@@ -1,0 +1,17 @@
+[
+    {
+        "id": 0,
+        "location_id": 0,
+        "gender": "Men"
+    },
+    {
+        "id": 1,
+        "location_id": 0,
+        "gender": "Women"
+    },
+    {
+        "id": 2,
+        "location_id": 1,
+        "gender": "Unisex"
+    }
+]
