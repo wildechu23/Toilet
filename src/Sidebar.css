@@ -42,3 +42,7 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
+.location-name {
+    font-size: 1.5rem;
+}

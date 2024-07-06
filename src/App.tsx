@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 import './App.css';
 import Location from './Location.tsx'
@@ -12,7 +12,6 @@ import locations from './assets/location.json';
 function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [sidebarId, setSidebarId] = useState(0);
-    const sidebarRef = useRef<HTMLDivElement>(null);
 
     const handleViewSidebar = (id: number) => {
         setSidebarOpen(true);
@@ -51,9 +50,7 @@ function App() {
                     </Marker>
                 ))}
             </MapContainer>
-            <div id="sidebar" ref={sidebarRef}>
-                <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
-            </div>
+            <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
         </>
     )
 }

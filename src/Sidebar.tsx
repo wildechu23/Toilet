@@ -26,7 +26,9 @@ function Sidebar({ isOpen, id, closeSidebar }: SidebarProps) {
                 <button type="button" className="close-button" onClick={closeSidebar}>&#10006;</button>
             </div>
             <div className="location-content">
-                {getInfo(id)?.name}
+                <div className="location-name">
+                    {getInfo(id)?.name}
+                </div>
             </div>
         </div>
     );
