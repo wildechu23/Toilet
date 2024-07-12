@@ -4,8 +4,9 @@ import { LatLngTuple } from 'leaflet';
 import { useState } from 'react';
 
 import './App.css';
-import Location from './Location.tsx'
-import Sidebar from './Sidebar.tsx'
+import Location from './location_marker/Location.tsx';
+import Sidebar from './Sidebar.tsx';
+import AddButton from './add_location/AddButton.tsx';
 
 import locations from './assets/location.json';
 
@@ -51,6 +52,7 @@ function App() {
                 ))}
             </MapContainer>
             <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
+            <AddButton />
         </>
     )
 }

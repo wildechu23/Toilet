@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 import './Location.css';
 import Rating from './Rating.tsx';
 
-import restrooms from './assets/restroom.json';
+import restrooms from '../assets/restroom.json';
 
 
 export interface LocationProps {

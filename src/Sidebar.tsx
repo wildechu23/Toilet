@@ -1,4 +1,5 @@
 import './Sidebar.css';
+import Rating from './location_marker/Rating';
 
 import locations from './assets/location.json';
 
@@ -28,6 +29,10 @@ function Sidebar({ isOpen, id, closeSidebar }: SidebarProps) {
             <div className="location-content">
                 <div className="location-name">
                     {getInfo(id)?.name}
+                </div>
+                <div className="location-star-rating">
+                    <Rating rating={3.6}/>
+                    ({3.6})
                 </div>
             </div>
         </div>

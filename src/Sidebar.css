@@ -46,3 +46,9 @@
 .location-name {
     font-size: 1.5rem;
 }
+
+.location-star-rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
