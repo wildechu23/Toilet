@@ -9,10 +9,13 @@ import Sidebar from './Sidebar.tsx';
 import AddButton from './add_location/AddButton.tsx';
 
 import locations from './assets/location.json';
+import AddLocationOverlay from './add_location/AddLocationOverlay.tsx';
 
 function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [sidebarId, setSidebarId] = useState(0);
+
+    const [addLocationOpen, setAddLocationOpen] = useState(false);
 
     const handleViewSidebar = (id: number) => {
         setSidebarOpen(true);
@@ -21,6 +24,10 @@ function App() {
 
     const handleCloseSidebar = () => {
         setSidebarOpen(false);
+    }
+
+    const toggleOverlay = () => {
+        setAddLocationOpen(!addLocationOpen);
     }
 
     return (
@@ -52,7 +59,8 @@ function App() {
                 ))}
             </MapContainer>
             <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
-            <AddButton />
+            <AddButton openOverlay={toggleOverlay}/>
+            <AddLocationOverlay isOpen={addLocationOpen} closeOverlay={toggleOverlay}/>
         </>
     )
 }

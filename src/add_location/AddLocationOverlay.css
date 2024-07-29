@@ -1,0 +1,113 @@
+.overlay-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    position:absolute;
+    top:50%;
+    left:50%;
+    width: 30%;
+    height: 80%;
+    padding: 20px;
+    transform:translate(-50%, -50%);
+    background-color:#747474;
+    overflow-y:auto;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+
+.overlay-box > div {
+    padding: 10px 25px;
+}
+
+.overlay-name {
+    font-size: 1.5em;
+    padding-bottom: 8px;
+    border-bottom: solid;
+}
+
+.location-form {
+    text-align: left;
+    margin: 5px;
+    padding: 8px;
+}
+
+.location-fields {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+.location-fields label {
+    padding: 2px 8px;
+}
+
+
+.location-fields input {
+    flex: 1;
+}
+
+.location-map-wrapper {
+    padding: 15px;
+}
+
+.location-map-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    height: 300px;
+}
+
+.overlay-restrooms {
+    font-weight: bold;
+}
+
+.restroom-list {
+    width: 100%;
+}
+
+.restroom-item  {
+    border: 1px solid white;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+button {
+    background: linear-gradient(to bottom, #484848, #393939);
+    padding: 5px 10px;
+}
+
+.add-restroom-button {
+    font-size: 0.875em;
+}
+
+
+.edit-button {
+    font-size: 0.875em;
+    z-index: 1;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+.overlay-submit {
+    text-align: center;
+}
+
+.submit-button {
+    margin: 15px;
+}
