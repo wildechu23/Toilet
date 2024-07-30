@@ -5,8 +5,8 @@ import './AddLocationOverlay.css';
 import { LatLngTuple } from 'leaflet';
 
 interface AddLocationOverlayProps {
-    isOpen: boolean,
     closeOverlay: () => void,
+    toggleSelect: () => void,
 }
 
 interface RestroomProps {
@@ -21,7 +21,7 @@ interface RestroomProps {
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ isOpen, closeOverlay }: AddLocationOverlayProps) {
+function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
 
@@ -73,7 +73,6 @@ function AddLocationOverlay({ isOpen, closeOverlay }: AddLocationOverlayProps) {
 
     return (
         <>
-            {isOpen && 
             <div className="overlay-mask">
                 <div className="overlay-box">    
                     <div className="overlay-name">
@@ -112,7 +111,11 @@ function AddLocationOverlay({ isOpen, closeOverlay }: AddLocationOverlayProps) {
                                             position={currentLatLng as LatLngTuple}
                                         ></Marker>
                                     </MapContainer>
-                                    <button type="button" className="edit-button">Edit Location</button>
+                                    <button type="button" 
+                                        className="edit-button" 
+                                        onClick={toggleSelect}>
+                                        Edit Location
+                                    </button>
                                 </div>
                             </div>
                         </fieldset>
@@ -170,7 +173,7 @@ function AddLocationOverlay({ isOpen, closeOverlay }: AddLocationOverlayProps) {
                         </div>
                     </form>
                 </div>
-            </div>}
+            </div>
         </>
     );
 }
