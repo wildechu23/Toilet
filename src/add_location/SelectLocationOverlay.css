@@ -35,3 +35,15 @@
     padding-bottom: 8px;
     border-bottom: solid;
 }
+
+.confirm-button {
+    margin: auto;
+    width: 100px;
+}
+
+.location-map-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 300px;
+}

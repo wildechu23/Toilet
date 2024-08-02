@@ -2,11 +2,12 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import axios from 'axios';
 import './AddLocationOverlay.css';
+import SelectLocationOverlay from './SelectLocationOverlay';
 import { LatLngTuple } from 'leaflet';
 
 interface AddLocationOverlayProps {
-    closeOverlay: () => void,
-    toggleSelect: () => void,
+    isOpen: boolean,
+    toggleOverlay: () => void,
 }
 
 interface RestroomProps {
@@ -21,11 +22,13 @@ interface RestroomProps {
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayProps) {
+function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
+    
+    const [center, setCenter] = useState<[number, number]>([42.7284, -73.677]);
 
-    let currentLatLng = [42.7284, -73.677];
+    const [selectLocationOpen, setSelectLocationOpen] = useState(false);
 
     function resetData() {
         setName("");
@@ -57,6 +60,10 @@ function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayPr
         console.log(data);
     }
 
+    function handleCenter(c: [number, number]) {
+        setCenter(c);
+    }
+
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         console.log(locationName);
@@ -68,11 +75,17 @@ function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayPr
         // .then((res) => console.log(res))
         // .catch((err) => console.log(err));
         resetData();
-        closeOverlay();
+        toggleOverlay();
+    }
+
+    function toggleSelect() {
+        toggleOverlay();
+        setSelectLocationOpen(!selectLocationOpen);
     }
 
     return (
         <>
+            {isOpen && 
             <div className="overlay-mask">
                 <div className="overlay-box">    
                     <div className="overlay-name">
@@ -94,7 +107,7 @@ function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayPr
                             <div className="location-map-wrapper">
                                 <div className="location-map-button">
                                     <MapContainer 
-                                        center={currentLatLng as LatLngTuple} zoom={15} 
+                                        center={center as LatLngTuple} zoom={15} 
                                         attributionControl={false} 
                                         doubleClickZoom={false}
                                         dragging={false}
@@ -108,7 +121,7 @@ function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayPr
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                         />
                                         <Marker
-                                            position={currentLatLng as LatLngTuple}
+                                            position={center as LatLngTuple}
                                         ></Marker>
                                     </MapContainer>
                                     <button type="button" 
@@ -174,6 +187,10 @@ function AddLocationOverlay({ closeOverlay, toggleSelect }: AddLocationOverlayPr
                     </form>
                 </div>
             </div>
+            }
+            {selectLocationOpen &&
+                <SelectLocationOverlay center={center} setCenter={handleCenter} toggleSelect={toggleSelect}/>
+            }
         </>
     );
 }
