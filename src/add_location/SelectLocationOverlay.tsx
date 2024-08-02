@@ -4,8 +4,8 @@ import { LatLngTuple } from 'leaflet';
 import { useState } from 'react';
 
 interface SelectLocationOverlayProps {
-    center: [number, number],
-    setCenter: (c: [number, number]) => void,
+    center: LatLngTuple,
+    setCenter: (c: LatLngTuple) => void,
     toggleSelect: () => void,
 }
 
@@ -34,14 +34,14 @@ function SelectLocationOverlay({center, setCenter, toggleSelect}: SelectLocation
                 </div>
                 <div className="location-map-wrapper">
                     <MapContainer 
-                        center={center as LatLngTuple} 
+                        center={center} 
                         zoom={15} 
                         style={{ width: "100%", height: "300px"}}
                     >
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        <Marker position={markerPos as LatLngTuple} />
+                        <Marker position={markerPos} />
                         <MapEvents />
                     </MapContainer>
                 </div>

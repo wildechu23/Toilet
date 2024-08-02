@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 import { useState } from 'react';
 
@@ -17,6 +17,18 @@ function App() {
 
     const [addLocationOpen, setAddLocationOpen] = useState(false);
 
+    
+    const [center, setCenter] = useState<LatLngTuple>([42.7284, -73.677]);
+
+    function MapEvents() {
+        useMapEvents({
+            moveend: (event) => {
+                const map = event.target;
+                setCenter(map.getCenter());
+            }
+        });
+        return null;
+    }
 
     const handleViewSidebar = (id: number) => {
         setSidebarOpen(true);
@@ -33,7 +45,7 @@ function App() {
 
     return (
         <>
-            <MapContainer center={[42.7284, -73.677]} zoom={15} scrollWheelZoom={true} zoomControl={false} style={{ width: "100vw", height: "100vh" }}>
+            <MapContainer center={center} zoom={15} scrollWheelZoom={true} zoomControl={false} style={{ width: "100vw", height: "100vh" }}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -58,10 +70,11 @@ function App() {
                         </Popup>
                     </Marker>
                 ))}
+                <MapEvents />
             </MapContainer>
             <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
             <AddButton openOverlay={toggleOverlay}/>
-            <AddLocationOverlay isOpen={addLocationOpen} toggleOverlay={toggleOverlay}/>
+            <AddLocationOverlay isOpen={addLocationOpen} mapCenter={center} toggleOverlay={toggleOverlay}/>
         </>
     )
 }

@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { ChangeEvent, FormEvent, useState, useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import axios from 'axios';
 import './AddLocationOverlay.css';
 import SelectLocationOverlay from './SelectLocationOverlay';
@@ -7,6 +7,7 @@ import { LatLngTuple } from 'leaflet';
 
 interface AddLocationOverlayProps {
     isOpen: boolean,
+    mapCenter: LatLngTuple,
     toggleOverlay: () => void,
 }
 
@@ -22,11 +23,12 @@ interface RestroomProps {
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) {
+function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay }: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
     
-    const [center, setCenter] = useState<[number, number]>([42.7284, -73.677]);
+    const [center, setCenter] = useState<LatLngTuple>(mapCenter);
+    
 
     const [selectLocationOpen, setSelectLocationOpen] = useState(false);
 
@@ -34,6 +36,10 @@ function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) 
         setName("");
         setInputFields([]);
     }
+
+    useEffect(() => {
+        setCenter(mapCenter);
+    }, [mapCenter]);
 
     function addEmptyRestroom() {
         setInputFields(prev => [...prev, {
@@ -57,10 +63,9 @@ function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) 
         let data = [...inputFields];
         data[index][name] = checked;
         setInputFields(data);
-        console.log(data);
     }
 
-    function handleCenter(c: [number, number]) {
+    function handleCenter(c: LatLngTuple) {
         setCenter(c);
     }
 
@@ -107,7 +112,7 @@ function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) 
                             <div className="location-map-wrapper">
                                 <div className="location-map-button">
                                     <MapContainer 
-                                        center={center as LatLngTuple} zoom={15} 
+                                        center={center} zoom={15} 
                                         attributionControl={false} 
                                         doubleClickZoom={false}
                                         dragging={false}
@@ -121,7 +126,7 @@ function AddLocationOverlay({ isOpen, toggleOverlay }: AddLocationOverlayProps) 
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                         />
                                         <Marker
-                                            position={center as LatLngTuple}
+                                            position={center}
                                         ></Marker>
                                     </MapContainer>
                                     <button type="button" 
