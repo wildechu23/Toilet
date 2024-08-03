@@ -1,15 +1,18 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import './App.css';
 import Location from './location_marker/Location.tsx';
 import Sidebar from './Sidebar.tsx';
 import AddButton from './add_location/AddButton.tsx';
 
-import locations from './assets/location.json';
+// import locations from './assets/location.json';
 import AddLocationOverlay from './add_location/AddLocationOverlay.tsx';
+
+import { LocationDataProps } from './types';
 
 function App() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -17,7 +20,21 @@ function App() {
 
     const [addLocationOpen, setAddLocationOpen] = useState(false);
 
+    const [locations, setLocations] = useState([] as LocationDataProps[]);
     
+    useEffect(() => { 
+        fetchLocations() 
+    }, []);
+    
+    async function fetchLocations() {
+        try {
+            const res = await axios.get('//localhost:3000/locations');
+            setLocations(res.data);
+        } catch (err) {
+            console.error('Error fetching locations:', err);
+        }
+    };
+
     const [center, setCenter] = useState<LatLngTuple>([42.7284, -73.677]);
 
     function MapEvents() {
@@ -52,29 +69,28 @@ function App() {
                 />
                 {locations.map(location => (
                     <Marker
-                        position={location.latlng as LatLngTuple}
-                        key={location.id}
+                        position={[location.latitude, location.longitude] as LatLngTuple}
+                        key={location.location_id}
                         eventHandlers={{
                             mouseover: (event) => event.target.openPopup(),
                             mouseout: (event) => event.target.closePopup(),
-                            click: () => handleViewSidebar(location.id),
+                            click: () => handleViewSidebar(location.location_id),
                         }}
                     >
                         <Popup>
                             <Location
-                                key={location.id}
-                                id={location.id}
-                                name={location.name}
-                                latlng={location.latlng}
+                                key={location.location_id}
+                                id={location.location_id}
+                                name={location.location_name}
                             />
                         </Popup>
                     </Marker>
                 ))}
                 <MapEvents />
             </MapContainer>
-            <Sidebar isOpen={sidebarOpen} id={sidebarId} closeSidebar={handleCloseSidebar} />
+            <Sidebar isOpen={sidebarOpen} locations={locations} id={sidebarId} closeSidebar={handleCloseSidebar} />
             <AddButton openOverlay={toggleOverlay}/>
-            <AddLocationOverlay isOpen={addLocationOpen} mapCenter={center} toggleOverlay={toggleOverlay}/>
+            <AddLocationOverlay isOpen={addLocationOpen} mapCenter={center} toggleOverlay={toggleOverlay} fetchLocations={fetchLocations}/>
         </>
     )
 }

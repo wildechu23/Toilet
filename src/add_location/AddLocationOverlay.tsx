@@ -9,6 +9,7 @@ interface AddLocationOverlayProps {
     isOpen: boolean,
     mapCenter: LatLngTuple,
     toggleOverlay: () => void,
+    fetchLocations: () => void,
 }
 
 interface RestroomProps {
@@ -23,7 +24,7 @@ interface RestroomProps {
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay }: AddLocationOverlayProps) {
+function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, fetchLocations }: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
     
@@ -69,18 +70,25 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay }: AddLocationOve
         setCenter(c);
     }
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        console.log(locationName);
-        // axios.post('//localhost:3000/locations', {
-        //     "name": locationName,
-        //     "lat": 42.7284,
-        //     "lng": -73.677
-        // })
-        // .then((res) => console.log(res))
-        // .catch((err) => console.log(err));
+    function exitOverlay() {
         resetData();
         toggleOverlay();
+    }
+
+    function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        axios.post('//localhost:3000/locations', {
+            "name": locationName,
+            "lat": center[0],
+            "lng": center[1],
+            "restrooms": inputFields,
+        })
+        .then((res) => {
+            console.log(res);
+            fetchLocations();
+        })
+        .catch((err) => console.log(err));
+        exitOverlay();
     }
 
     function toggleSelect() {
@@ -96,8 +104,11 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay }: AddLocationOve
                     <div className="overlay-name">
                         Add Location
                     </div>
+                    <button type="button" className="close-overlay-button" onClick={exitOverlay}>X</button>
                     <form className="location-form" onSubmit={handleSubmit}>
-                        Place Details:
+                        <div className="location-header">
+                            Place Details:
+                        </div>
                         <fieldset className="location-fields">
                             <div className="location-name-field">
                                 <label htmlFor="location-name">Name:</label>

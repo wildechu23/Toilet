@@ -6,10 +6,9 @@ import Rating from './Rating.tsx';
 import restrooms from '../assets/restroom.json';
 
 
-export interface LocationProps {
+interface LocationProps {
     id: number,
     name: string,
-    latlng: number[],
 }
 
 enum BathroomGender {
@@ -26,7 +25,7 @@ function getGenders(current_location_id: number) {
     return genders;
 }
 
-function Location({id, name, latlng}: LocationProps) {
+function Location({id, name}: LocationProps) {
     const genders = getGenders(id);
 
     return (
