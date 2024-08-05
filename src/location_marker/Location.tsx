@@ -1,9 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 
 import './Location.css';
 import Rating from './Rating.tsx';
 
-import restrooms from '../assets/restroom.json';
+import { fetchRestrooms } from '../utils/toilets_api.tsx';
+import { RestroomProps } from '../utils/types.tsx';
 
 
 interface LocationProps {
@@ -15,18 +16,31 @@ enum BathroomGender {
     Men, Women, Unisex
 }
 
-function getGenders(current_location_id: number) {
+function getGenders(current_location_id: number): Promise<BathroomGender[]> {
     const genders: BathroomGender[] = [];
-    for(var {location_id, gender} of restrooms) {
-        if(current_location_id == location_id) {
-            genders.push(BathroomGender[gender as keyof typeof BathroomGender])
-        }
-    }
-    return genders;
+    return fetchRestrooms(current_location_id)
+        .then((restrooms: RestroomProps[]) => {
+            for (var { gender } of restrooms) {
+                genders.push(BathroomGender[gender as keyof typeof BathroomGender]);
+            }
+            return genders;
+        })
+        .catch((err) => {
+            console.log(err);
+            return genders;
+        });
 }
 
-function Location({id, name}: LocationProps) {
-    const genders = getGenders(id);
+function Location({ id, name }: LocationProps) {
+    const [genders, setGenders] = useState([] as BathroomGender[]);
+
+    useEffect(() => {
+        async function fetchGenders() {
+            const fetchedGenders = await getGenders(id);
+            setGenders(fetchedGenders);
+        }
+        fetchGenders();
+    }, [id]);
 
     return (
         <>

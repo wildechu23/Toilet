@@ -31,6 +31,12 @@
     border-bottom-left-radius: 5px;
 }
 
+.location-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .close-button {
     border: 0;
     width: 40px; 
@@ -52,3 +58,55 @@
     align-items: center;
     justify-content: center;
 }
+
+.edit-sidebar-button {
+    font-size: 0.8rem;
+    align-self: center;
+    margin: 10px;
+}
+
+.edit-sidebar-button * {
+    margin: 3px;
+}
+
+.restroom-entry {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 10px 15px;
+}
+
+.restroom-title {
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 2px;
+}
+
+.icon.single-stall {
+    background-image: url('./assets/icons/single.svg');
+}
+
+.icon.wheelchair-stall {
+    background-image: url('./assets/icons/wheelchair.svg');
+}
+
+.icon.mirror {
+    background-image: url('./assets/icons/mirror.svg');
+}
+
+.icon.hand-dryer {
+    background-image: url('./assets/icons/dryer.svg');
+}
+
+.icon.paper-towel {
+    background-image: url('./assets/icons/towel.svg');
+}
+

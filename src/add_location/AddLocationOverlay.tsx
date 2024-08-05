@@ -1,36 +1,28 @@
 import { ChangeEvent, FormEvent, useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
-import axios from 'axios';
 import './AddLocationOverlay.css';
 import SelectLocationOverlay from './SelectLocationOverlay';
 import { LatLngTuple } from 'leaflet';
+
+import { postLocation } from '../utils/toilets_api';
+import { RestroomProps } from '../utils/types';
 
 interface AddLocationOverlayProps {
     isOpen: boolean,
     mapCenter: LatLngTuple,
     toggleOverlay: () => void,
-    fetchLocations: () => void,
-}
-
-interface RestroomProps {
-    gender: string,
-    single_stall: boolean,
-    wheelchair_stall: boolean,
-    mirrors: boolean,
-    hand_dryers: boolean,
-    paper_towels: boolean,
+    updateLocations: () => void,
 }
 
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, fetchLocations }: AddLocationOverlayProps) {
+function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations }: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
     
     const [center, setCenter] = useState<LatLngTuple>(mapCenter);
     
-
     const [selectLocationOpen, setSelectLocationOpen] = useState(false);
 
     function resetData() {
@@ -77,17 +69,8 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, fetchLocations }
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        axios.post('//localhost:3000/locations', {
-            "name": locationName,
-            "lat": center[0],
-            "lng": center[1],
-            "restrooms": inputFields,
-        })
-        .then((res) => {
-            console.log(res);
-            fetchLocations();
-        })
-        .catch((err) => console.log(err));
+        postLocation(locationName, center, inputFields);
+        updateLocations();
         exitOverlay();
     }
 
