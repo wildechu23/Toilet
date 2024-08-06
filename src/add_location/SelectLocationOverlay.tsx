@@ -6,11 +6,13 @@ import { useState } from 'react';
 interface SelectLocationOverlayProps {
     center: LatLngTuple,
     setCenter: (c: LatLngTuple) => void,
-    toggleSelect: () => void,
+    openOverlay: () => void,
+    closeSelect: () => void,
 }
 
-function SelectLocationOverlay({center, setCenter, toggleSelect}: SelectLocationOverlayProps) {
+function SelectLocationOverlay({center, setCenter, openOverlay, closeSelect}: SelectLocationOverlayProps) {
     const [markerPos, setMarkerPos] = useState(center);
+
     function MapEvents() {
         useMapEvents({
             click: (event) => {
@@ -23,7 +25,8 @@ function SelectLocationOverlay({center, setCenter, toggleSelect}: SelectLocation
 
     function handleConfirm() {
         setCenter(markerPos);
-        toggleSelect();
+        closeSelect();
+        openOverlay();
     }
     
     return (

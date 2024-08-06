@@ -1,38 +1,67 @@
-import { ChangeEvent, FormEvent, useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import './AddLocationOverlay.css';
 import SelectLocationOverlay from './SelectLocationOverlay';
 import { LatLngTuple } from 'leaflet';
 
 import { postLocation } from '../utils/toilets_api';
-import { RestroomProps } from '../utils/types';
+import { LocationDataProps, RestroomProps } from '../utils/types';
 
 interface AddLocationOverlayProps {
-    isOpen: boolean,
     mapCenter: LatLngTuple,
-    toggleOverlay: () => void,
     updateLocations: () => void,
+    editMode: boolean,
+    closeEdit: () => void,
+    addLocationOpen: boolean, 
+    selectLocationOpen: boolean, 
+    openOverlay: () => void, 
+    closeOverlay: () => void, 
+    openSelect: () => void,
+    closeSelect: () => void, 
+    currentLocation: LocationDataProps | undefined,
+    currentRestrooms: RestroomProps[]
 }
 
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
 
-function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations }: AddLocationOverlayProps) {
+function AddLocationOverlay({ 
+    mapCenter, 
+    updateLocations, 
+    editMode, 
+    closeEdit, 
+    addLocationOpen, 
+    selectLocationOpen, 
+    openOverlay,
+    closeOverlay, 
+    openSelect,
+    closeSelect,
+    currentLocation, 
+    currentRestrooms, 
+}: AddLocationOverlayProps) {
     const [locationName, setName] = useState("");
     const [inputFields, setInputFields] = useState([] as RestroomProps[]);
     
     const [center, setCenter] = useState<LatLngTuple>(mapCenter);
     
-    const [selectLocationOpen, setSelectLocationOpen] = useState(false);
+
+    useEffect(() => {
+        if(editMode && currentLocation) {
+            setName(currentLocation.location_name);
+            setInputFields(currentRestrooms);
+            setCenter([currentLocation.latitude, currentLocation.longitude]);
+        } else {
+            setName("");
+            setInputFields([]);
+            setCenter(mapCenter);
+        }
+    }, [editMode, currentLocation, mapCenter]);
 
     function resetData() {
         setName("");
         setInputFields([]);
     }
 
-    useEffect(() => {
-        setCenter(mapCenter);
-    }, [mapCenter]);
 
     function addEmptyRestroom() {
         setInputFields(prev => [...prev, {
@@ -63,8 +92,14 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations 
     }
 
     function exitOverlay() {
+        if(editMode) closeEdit();
         resetData();
-        toggleOverlay();
+        closeOverlay();
+    }
+
+    function handleEditLocation() {
+        closeOverlay();
+        openSelect();
     }
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -74,18 +109,13 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations 
         exitOverlay();
     }
 
-    function toggleSelect() {
-        toggleOverlay();
-        setSelectLocationOpen(!selectLocationOpen);
-    }
-
     return (
         <>
-            {isOpen && 
+            {addLocationOpen && 
             <div className="overlay-mask">
                 <div className="overlay-box">    
                     <div className="overlay-name">
-                        Add Location
+                        {editMode ? "Edit Location" : "Add Location"}
                     </div>
                     <button type="button" className="close-overlay-button" onClick={exitOverlay}>X</button>
                     <form className="location-form" onSubmit={handleSubmit}>
@@ -125,7 +155,7 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations 
                                     </MapContainer>
                                     <button type="button" 
                                         className="edit-button" 
-                                        onClick={toggleSelect}>
+                                        onClick={handleEditLocation}>
                                         Edit Location
                                     </button>
                                 </div>
@@ -188,7 +218,7 @@ function AddLocationOverlay({ isOpen, mapCenter, toggleOverlay, updateLocations 
             </div>
             }
             {selectLocationOpen &&
-                <SelectLocationOverlay center={center} setCenter={handleCenter} toggleSelect={toggleSelect}/>
+                <SelectLocationOverlay center={center} setCenter={handleCenter} openOverlay={openOverlay} closeSelect={closeSelect}/>
             }
         </>
     );

@@ -3,36 +3,39 @@ import Rating from './location_marker/Rating';
 
 import { useState, useEffect } from 'react';
 import { LocationDataProps, RestroomProps } from './utils/types';
-import { fetchRestrooms } from './utils/toilets_api';
 
 interface SidebarProps {
     isOpen: boolean,
     id: number,
-    locations: LocationDataProps[],
+    setData: (id: number) => void
+    openEdit: () => void,
+    currentLocation: LocationDataProps | undefined,
+    currentRestrooms: RestroomProps[],
+    openOverlay: () => void,
     closeSidebar: () => void
 }
 
-function Sidebar({ isOpen, locations, id, closeSidebar }: SidebarProps) {
+function Sidebar({ 
+    isOpen, 
+    id, 
+    setData,
+    openEdit,
+    currentLocation,
+    currentRestrooms,
+    openOverlay,
+    closeSidebar 
+}: SidebarProps) {
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
-    const [currentLocation, setCurrentLocation] = useState<LocationDataProps | undefined>();
-    const [currentRestrooms, setCurrentRestrooms] = useState<RestroomProps[]>([])
 
     useEffect(() => {
-        async function setData() {
-            setCurrentLocation(getInfo(id));
-            setCurrentRestrooms(await fetchRestrooms(id));
-        }
-        setData();
-    }, [id]);
+        setData(id);
+    });
 
-    function getInfo(id: number) {
-        return locations.find((location) => {
-            if(location.location_id == id) { 
-                return location;
-            }
-        });
+
+    function openEditLocation() {
+        openEdit();
+        openOverlay();
     }
-
 
     return (
         <div className={sidebarClass}>
@@ -48,7 +51,7 @@ function Sidebar({ isOpen, locations, id, closeSidebar }: SidebarProps) {
                     <Rating rating={3.6}/>
                     ({3.6})
                 </div>
-                <button type="button" className="edit-sidebar-button">    
+                <button type="button" className="edit-sidebar-button" onClick={openEditLocation}>    
                     <i className="fa fa-edit"></i>
                     Edit Location
                 </button>

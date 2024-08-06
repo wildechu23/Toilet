@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { LocationDataProps } from './utils/types.tsx';
 import { fetchLocations } from './utils/toilets_api';
 
-export const useLocations = () => {
+const useLocations = () => {
     const [locations, setLocations] = useState<LocationDataProps[]>([]);
 
     const updateLocations = async () => {
@@ -16,3 +16,5 @@ export const useLocations = () => {
 
     return { locations, updateLocations };
 };
+
+export default useLocations;
