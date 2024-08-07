@@ -23,15 +23,29 @@ export async function fetchRestrooms(location_id: number) {
 
 
 export async function postLocation(locationName: string, center: LatLngTuple, inputFields: RestroomProps[]) {
-    axios.post('//localhost:3000/locations', {
+    const locationData = {
         "name": locationName,
         "lat": center[0],
         "lng": center[1],
         "restrooms": inputFields,
-    })
-    .then((res) => {
-        console.log(res);
-        fetchLocations();
-    })
-    .catch((err) => console.log(err));
+    }
+    return axios.post('//localhost:3000/locations', locationData)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => console.log(err));
+}
+
+export async function putLocation(locationName: string, id: number, center: LatLngTuple, inputFields: RestroomProps[]) {
+    const locationData = {
+        "name": locationName,
+        "lat": center[0],
+        "lng": center[1],
+        "restrooms": inputFields,
+    }
+    return axios.put(`//localhost:3000/locations/${id}`, locationData)
+        .then((res) => {
+            console.log(res);
+        })
+        .catch((err) => console.log(err));
 }

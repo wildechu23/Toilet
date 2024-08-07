@@ -4,7 +4,7 @@ import './AddLocationOverlay.css';
 import SelectLocationOverlay from './SelectLocationOverlay';
 import { LatLngTuple } from 'leaflet';
 
-import { postLocation } from '../utils/toilets_api';
+import { postLocation, putLocation } from '../utils/toilets_api';
 import { LocationDataProps, RestroomProps } from '../utils/types';
 
 interface AddLocationOverlayProps {
@@ -24,6 +24,8 @@ interface AddLocationOverlayProps {
 
 const genders = ["Men", "Women", "Unisex"];
 const checkboxes = ["Single Stall", "Wheelchair Stall", "Mirrors", "Hand Dryers", "Paper Towels"]
+const amenities = ["single_stall", "wheelchair_stall", "mirrors", "hand_dryers", "paper_towels"];
+
 
 function AddLocationOverlay({ 
     mapCenter, 
@@ -104,8 +106,19 @@ function AddLocationOverlay({
 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        postLocation(locationName, center, inputFields);
-        updateLocations();
+        let locationPromise;
+        if(editMode && currentLocation) {
+            locationPromise = putLocation(locationName, currentLocation.location_id, center, inputFields);
+        } else {
+            locationPromise = postLocation(locationName, center, inputFields);
+        }
+
+        locationPromise.then(() => {
+            updateLocations();
+        })
+        .catch((err) => {
+            console.error(err);
+        })
         exitOverlay();
     }
 
@@ -189,17 +202,17 @@ function AddLocationOverlay({
                                     </fieldset>
                                     <fieldset>
                                         <legend>Amenities</legend>
-                                        {checkboxes.map((prop) =>
+                                        {checkboxes.map((prop, jndex) =>
                                             <div key={prop}>
                                                 <input
                                                     id={`item-${index}-${prop}`}
                                                     type="checkbox"
-                                                    checked={input[prop as keyof RestroomProps] as boolean}
+                                                    checked={input[amenities[jndex] as keyof RestroomProps] as boolean}
                                                     value={prop}
                                                     name={prop}
                                                     onChange={event => handleFormChange(
                                                         index, 
-                                                        event.target.name.toLowerCase().replace(" ", "_") as keyof RestroomProps, event.target.checked
+                                                        amenities[jndex] as keyof RestroomProps, event.target.checked
                                                     )}
                                                 />
                                                 <label htmlFor={`item-${index}-${prop}`}>{prop}</label>

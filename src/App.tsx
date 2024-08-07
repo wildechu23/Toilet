@@ -76,6 +76,7 @@ function App() {
                 id={sidebarId} 
                 setData={setData}
                 openEdit={openEdit}
+                locations={locations}
                 currentLocation={currentLocation}
                 currentRestrooms={currentRestrooms}
                 openOverlay={openOverlay}

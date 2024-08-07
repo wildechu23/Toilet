@@ -9,6 +9,7 @@ interface SidebarProps {
     id: number,
     setData: (id: number) => void
     openEdit: () => void,
+    locations: LocationDataProps[],
     currentLocation: LocationDataProps | undefined,
     currentRestrooms: RestroomProps[],
     openOverlay: () => void,
@@ -20,6 +21,7 @@ function Sidebar({
     id, 
     setData,
     openEdit,
+    locations,
     currentLocation,
     currentRestrooms,
     openOverlay,
@@ -29,8 +31,7 @@ function Sidebar({
 
     useEffect(() => {
         setData(id);
-    });
-
+    }, [id, locations]);
 
     function openEditLocation() {
         openEdit();
@@ -69,6 +70,9 @@ function Sidebar({
                         {!!restroom.paper_towels && <span title="Paper Towels"className="icon paper-towel"/>}
                     </div>
                 ))}
+            </div>
+            <div className="reviews">
+
             </div>
         </div>
     );
