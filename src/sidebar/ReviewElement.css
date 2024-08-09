@@ -1,0 +1,24 @@
+.review-entry {
+    text-align: left;
+    border: 1px solid;
+    border-radius: 5px;
+    margin: 10px 15px;
+    padding: 10px 20px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.review-rating-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.review-text {
+    padding: 5px 0px;
+    border-top: 1px solid;
+}

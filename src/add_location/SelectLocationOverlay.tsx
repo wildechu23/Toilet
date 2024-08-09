@@ -30,26 +30,24 @@ function SelectLocationOverlay({center, setCenter, openOverlay, closeSelect}: Se
     }
     
     return (
-        <div className="overlay-mask">
-            <div className="overlay-box">   
-                <div className="overlay-name">
-                    Select Location
-                </div>
-                <div className="location-map-wrapper">
-                    <MapContainer 
-                        center={center} 
-                        zoom={15} 
-                        style={{ width: "100%", height: "300px"}}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={markerPos} />
-                        <MapEvents />
-                    </MapContainer>
-                </div>
-                <button type="button" className="confirm-button" onClick={handleConfirm}>Confirm</button> 
+        <div className="overlay-box">   
+            <div className="overlay-name">
+                Select Location
             </div>
+            <div className="location-map-wrapper">
+                <MapContainer 
+                    center={center} 
+                    zoom={15} 
+                    style={{ width: "100%", height: "300px"}}
+                >
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={markerPos} />
+                    <MapEvents />
+                </MapContainer>
+            </div>
+            <button type="button" className="confirm-button" onClick={handleConfirm}>Confirm</button> 
         </div>
     );
 }

@@ -125,7 +125,6 @@ function AddLocationOverlay({
     return (
         <>
             {addLocationOpen && 
-            <div className="overlay-mask">
                 <div className="overlay-box">    
                     <div className="overlay-name">
                         {editMode ? "Edit Location" : "Add Location"}
@@ -228,7 +227,6 @@ function AddLocationOverlay({
                         </div>
                     </form>
                 </div>
-            </div>
             }
             {selectLocationOpen &&
                 <SelectLocationOverlay center={center} setCenter={handleCenter} openOverlay={openOverlay} closeSelect={closeSelect}/>

@@ -1,0 +1,9 @@
+.review-text {
+    display: flex;
+    flex-direction: column;
+}
+
+textarea {
+    flex: 1;
+    resize: none;
+}

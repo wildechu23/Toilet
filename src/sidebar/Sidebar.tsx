@@ -1,8 +1,10 @@
 import './Sidebar.css';
-import Rating from './location_marker/Rating';
+import Rating from '../location_marker/Rating';
+import RestroomLabel from './RestroomLabel';
+import ReviewElement from './ReviewElement';
 
 import { useState, useEffect } from 'react';
-import { LocationDataProps, RestroomProps } from './utils/types';
+import { LocationDataProps, RestroomProps, ReviewProps } from '../utils/types';
 
 interface SidebarProps {
     isOpen: boolean,
@@ -12,8 +14,10 @@ interface SidebarProps {
     locations: LocationDataProps[],
     currentLocation: LocationDataProps | undefined,
     currentRestrooms: RestroomProps[],
+    currentReviews: ReviewProps[],
     openOverlay: () => void,
-    closeSidebar: () => void
+    closeSidebar: () => void,
+    openReview: (id: number) => void,
 }
 
 function Sidebar({ 
@@ -24,8 +28,10 @@ function Sidebar({
     locations,
     currentLocation,
     currentRestrooms,
+    currentReviews,
     openOverlay,
-    closeSidebar 
+    closeSidebar,
+    openReview
 }: SidebarProps) {
     const sidebarClass = isOpen ? "sidebar open" : "sidebar";
 
@@ -58,21 +64,15 @@ function Sidebar({
                 </button>
             </div>
             <div className="restrooms">
-                {currentRestrooms.map((restroom, index) => (
-                    <div key={index} className={"restroom-entry"}>
-                        <div className="restroom-title">
-                            {restroom.gender}
-                        </div>
-                        {!!restroom.single_stall && <span title="Single Stall" className="icon single-stall"/>}
-                        {!!restroom.wheelchair_stall && <span title="Wheelchair Stall" className="icon wheelchair-stall"/>}
-                        {!!restroom.mirrors && <span title="Mirrors" className="icon mirror"/>}
-                        {!!restroom.hand_dryers && <span title="Hand Dryers" className="icon hand-dryer"/>}
-                        {!!restroom.paper_towels && <span title="Paper Towels"className="icon paper-towel"/>}
-                    </div>
-                ))}
+                {currentRestrooms.map((restroom, index) => 
+                    <RestroomLabel key={index} restroom={restroom} addReview={() => {openReview(restroom.restroom_id!)}}/>
+                )}
             </div>
             <div className="reviews">
-
+                Reviews
+                {currentReviews.map((review, index) => 
+                    <ReviewElement key={index} review={review}/>
+                )}
             </div>
         </div>
     );
