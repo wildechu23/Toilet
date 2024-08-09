@@ -8,8 +8,6 @@ const useLocations = () => {
     const updateLocations = async () => {
         const data = await fetchLocations();
         
-        console.log(data);
-        
         const locationPromises = data.map(async (data: LocationDataProps) => {
             const rating = await fetchRating(data.location_id);
             const convert: LocationProps = { ...data, rating };
