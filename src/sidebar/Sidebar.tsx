@@ -3,16 +3,16 @@ import Rating from '../location_marker/Rating';
 import RestroomLabel from './RestroomLabel';
 import ReviewElement from './ReviewElement';
 
-import { useState, useEffect } from 'react';
-import { LocationDataProps, RestroomProps, ReviewProps } from '../utils/types';
+import { useEffect } from 'react';
+import { LocationProps, RestroomProps, ReviewProps } from '../utils/types';
 
 interface SidebarProps {
     isOpen: boolean,
     id: number,
     setData: (id: number) => void
     openEdit: () => void,
-    locations: LocationDataProps[],
-    currentLocation: LocationDataProps | undefined,
+    locations: LocationProps[],
+    currentLocation: LocationProps | undefined,
     currentRestrooms: RestroomProps[],
     currentReviews: ReviewProps[],
     openOverlay: () => void,
@@ -82,7 +82,12 @@ function Sidebar({
                 </div>
                 {currentReviews.length == 0 ? "No Reviews" :
                 currentReviews.map((review, index) => 
-                    <ReviewElement key={index} review={review}/>
+                    <ReviewElement 
+                        key={index} 
+                        review={review}
+                        gender={
+                            currentRestrooms.find(r => r.restroom_id === review.restroom_id)?.gender
+                        }/>
                 )}
             </div>
         </div>

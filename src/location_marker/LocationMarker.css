@@ -1,0 +1,27 @@
+.checked {
+    color: #fcbc04;
+}
+
+.popupName {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.gender-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 2px;
+}
+
+.gender-icon.Men {
+    background-image: url('../assets/icons/men.svg');
+}
+
+.gender-icon.Women {
+    background-image: url('../assets/icons/women.svg');
+}
+
+.gender-icon.Unisex {
+    background-image: url('../assets/icons/unisex.svg');
+}

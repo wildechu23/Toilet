@@ -19,7 +19,7 @@ function RestroomLabel({ restroom, addReview } : RestroomLabelProps) {
                 {!!restroom.mirrors && <span title="Mirrors" className="icon mirror"/>}
                 {!!restroom.hand_dryers && <span title="Hand Dryers" className="icon hand-dryer"/>}
                 {!!restroom.paper_towels && <span title="Paper Towels"className="icon paper-towel"/>}
-                <button type="button" onClick={addReview}>+</button>
+                <button type="button" onClick={addReview} title="Add a Review">+</button>
             </div>
         </>
     );

@@ -1,15 +1,14 @@
 .sidebar {
     position: absolute;
     top: 0vw;
-    left: calc(min(-20vw, -242px) - 20px);
-    height: 100%;
+    left: calc(min(-20vw, -320px) - 20px);
+    height: calc(100vh - 40px);
     width: 20vw;
-    min-width: 242px;
+    min-width: 300px;
     border: 0;
-    padding: 15px 10px;
+    padding: 20px;
     transition: left 0.3s ease-in-out;
     background-color:#747474;
-    padding: 20px;
 }
 
 .sidebar.open {

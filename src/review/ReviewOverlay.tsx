@@ -1,11 +1,11 @@
 import './ReviewOverlay.css';
 import StarRatingInput from './StarRatingInput';
-import { LocationDataProps, RestroomProps } from '../utils/types';
+import { LocationProps, RestroomProps } from '../utils/types';
 import { FormEvent, useState } from 'react';
 import { postReview } from '../utils/toilets_api';
 
 interface ReviewOverlayProps {
-    location: LocationDataProps | undefined,
+    location: LocationProps | undefined,
     restroom: RestroomProps | undefined,
     closeReview: () => void,
     updateReviews: (id: number) => void,

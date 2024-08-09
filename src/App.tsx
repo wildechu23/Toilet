@@ -2,8 +2,8 @@ import 'leaflet/dist/leaflet.css';
 import { LatLngTuple } from 'leaflet';
 import { useState } from 'react';
 import useLocations from './useLocations';
-import { LocationDataProps, RestroomProps, ReviewProps } from './utils/types';
-import { fetchRestrooms, fetchReviews } from './utils/toilets_api.tsx';
+import { LocationProps, RestroomProps, ReviewProps } from './utils/types';
+import { fetchRating, fetchRestrooms, fetchReviews } from './utils/toilets_api.tsx';
 
 import './App.css';
 import Sidebar from './sidebar/Sidebar.tsx';
@@ -18,9 +18,9 @@ function App() {
     const [sidebarId, setSidebarId] = useState(0);
     const [center, setCenter] = useState<LatLngTuple>([42.7284, -73.677]);
 
-    const { locations, updateLocations } = useLocations();
+    const { locations, updateLocations, updateRating } = useLocations();
 
-    const [currentLocation, setCurrentLocation] = useState<LocationDataProps | undefined>();
+    const [currentLocation, setCurrentLocation] = useState<LocationProps | undefined>();
     const [currentRestrooms, setCurrentRestrooms] = useState<RestroomProps[]>([]);
     const [currentReviews, setCurrentReviews] = useState<ReviewProps[]>([]);
     const [editMode, setEditMode] = useState(false);
@@ -78,6 +78,7 @@ function App() {
     }
 
     const updateReviews = async (id: number) => {
+        updateRating(id);
         const data = await fetchReviews(id);
         setCurrentReviews(data);
     };

@@ -1,15 +1,17 @@
 import { Fragment, useState, useEffect } from 'react';
 
-import './Location.css';
+import './LocationMarker.css';
 import Rating from './Rating.tsx';
 
 import { fetchRestrooms } from '../utils/toilets_api.tsx';
-import { RestroomProps } from '../utils/types.tsx';
+import { LocationProps, RestroomProps } from '../utils/types.tsx';
 
 
-interface LocationProps {
+interface LocationMarkerProps {
     id: number,
     name: string,
+    rating: number,
+    updateTrigger: LocationProps | undefined
 }
 
 enum BathroomGender {
@@ -31,7 +33,7 @@ function getGenders(current_location_id: number): Promise<BathroomGender[]> {
         });
 }
 
-function Location({ id, name }: LocationProps) {
+function LocationMarker({ id, name, rating, updateTrigger }: LocationMarkerProps) {
     const [genders, setGenders] = useState([] as BathroomGender[]);
 
     useEffect(() => {
@@ -40,7 +42,8 @@ function Location({ id, name }: LocationProps) {
             setGenders(fetchedGenders);
         }
         fetchGenders();
-    }, [id]);
+    }, [updateTrigger]);
+
 
     return (
         <>
@@ -48,12 +51,12 @@ function Location({ id, name }: LocationProps) {
                 <div className="popupName">
                     {name}
                 </div>
-                <Rating rating={3.6}/>
+                <Rating rating={rating}/>
             </div>
             <div className="popupGenders">
             {genders.map((gender, index) => (
                 <Fragment key={index}>
-                    { BathroomGender[gender] }
+                    <span title="Hand Dryers" className={`gender-icon ${BathroomGender[gender]}` }/>
                 </Fragment>
             ))}
             </div>
@@ -61,4 +64,4 @@ function Location({ id, name }: LocationProps) {
     );
 }
 
-export default Location;
+export default LocationMarker;

@@ -1,11 +1,11 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import './AddLocationOverlay.css';
 import SelectLocationOverlay from './SelectLocationOverlay';
 import { LatLngTuple } from 'leaflet';
 
 import { postLocation, putLocation } from '../utils/toilets_api';
-import { LocationDataProps, RestroomProps } from '../utils/types';
+import { LocationProps, RestroomProps } from '../utils/types';
 
 interface AddLocationOverlayProps {
     mapCenter: LatLngTuple,
@@ -18,7 +18,7 @@ interface AddLocationOverlayProps {
     closeOverlay: () => void, 
     openSelect: () => void,
     closeSelect: () => void, 
-    currentLocation: LocationDataProps | undefined,
+    currentLocation: LocationProps | undefined,
     currentRestrooms: RestroomProps[]
 }
 
@@ -122,6 +122,14 @@ function AddLocationOverlay({
         exitOverlay();
     }
 
+    function UpdateMapView({ center }: { center: LatLngTuple }) {
+        const map = useMap();
+        useEffect(() => {
+            map.setView(center, map.getZoom(), { animate: false });
+        }, [center, map]);
+        return null;
+    }
+
     return (
         <>
             {addLocationOpen && 
@@ -164,6 +172,7 @@ function AddLocationOverlay({
                                         <Marker
                                             position={center}
                                         ></Marker>
+                                        <UpdateMapView center={center} />
                                     </MapContainer>
                                     <button type="button" 
                                         className="edit-button" 

@@ -1,12 +1,13 @@
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
-import { LocationDataProps } from './utils/types.tsx';
-import Location from './location_marker/Location.tsx';
+import { LocationProps } from './utils/types.tsx';
+import LocationMarker from './location_marker/LocationMarker.tsx';
 import './Map.css'
+import { useEffect } from 'react';
 
 interface MapComponentProps {
-    locations: LocationDataProps[];
+    locations: LocationProps[];
     onMarkerClick: (id: number) => void;
     center: LatLngTuple;
     setCenter: (center: LatLngTuple) => void;
@@ -39,11 +40,13 @@ function MapComponent({ locations, onMarkerClick, center, setCenter }: MapCompon
                         click: () => onMarkerClick(location.location_id),
                     }}
                 >
-                    <Popup>
-                        <Location
+                    <Popup closeButton={false}>
+                        <LocationMarker
                             key={location.location_id}
                             id={location.location_id}
                             name={location.location_name}
+                            rating={location.rating}
+                            updateTrigger={locations.find(l => l.location_id == location.location_id)}
                         />
                     </Popup>
                 </Marker>

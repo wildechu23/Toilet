@@ -5,6 +5,14 @@ export interface LocationDataProps {
     longitude: number,
 }
 
+export interface LocationProps {
+    location_id: number,
+    location_name: string,
+    latitude: number,
+    longitude: number,
+    rating: number,
+}
+
 export interface RestroomProps {
     restroom_id?: number
     gender: string,

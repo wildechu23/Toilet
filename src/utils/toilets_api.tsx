@@ -1,13 +1,20 @@
 import axios from 'axios';
 import { LatLngTuple } from 'leaflet';
-import { RestroomProps } from './types';
+import { LocationDataProps, RestroomProps, ReviewProps } from './types';
 
-export async function fetchLocations() {
+export async function fetchRating(id: number) {
+    const currentReviews = await fetchReviews(id);
+    if(currentReviews.length === 0) return 0;
+    return currentReviews.reduce((total: number, next: ReviewProps) => total + next.rating, 0) / currentReviews.length;
+}
+
+export async function fetchLocations(): Promise<LocationDataProps[]> {
     try {
         const res = await axios.get('//localhost:3000/locations');
         return res.data;
     } catch (err) {
-        console.error('Error fetching locations:', err);
+        console.error(err);
+        return [];
     }
 };
 
@@ -15,7 +22,6 @@ export async function fetchLocations() {
 export async function fetchRestrooms(location_id: number) {
     try {
         const res = await axios.get(`//localhost:3000/restrooms/${location_id}`);
-        console.log(res.data);
         return res.data;
     } catch (err) {
         console.error(`Error fetching restrooms for location ${location_id}:`, err);
@@ -67,7 +73,6 @@ export async function postReview(locationId: number, restroomId: number, starRat
 export async function fetchReviews(location_id: number) {
     try {
         const res = await axios.get(`//localhost:3000/reviews/location/${location_id}`);
-        console.log(res.data);
         return res.data;
     } catch (err) {
         console.error(`Error fetching restrooms for location ${location_id}:`, err);
