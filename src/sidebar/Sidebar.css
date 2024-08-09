@@ -9,11 +9,13 @@
     padding: 15px 10px;
     transition: left 0.3s ease-in-out;
     background-color:#747474;
+    padding: 20px;
 }
 
 .sidebar.open {
     left: 0;
 }
+
 
 .sidebar-header {
     display: flex;
@@ -67,4 +69,10 @@
 
 .edit-sidebar-button * {
     margin: 3px;
+}
+
+.sidebar-item-title {
+    text-align: left;
+    font-size: 1.25em;
+    margin-left: 5px;
 }

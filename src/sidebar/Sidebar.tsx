@@ -44,6 +44,11 @@ function Sidebar({
         openOverlay();
     }
 
+    function calculateRating() {
+        if(currentReviews.length == 0) return 0;
+        return currentReviews.reduce((total: number, next: ReviewProps) => total + next.rating, 0) / currentReviews.length;
+    }
+
     return (
         <div className={sidebarClass}>
             <div className="sidebar-header">
@@ -55,8 +60,8 @@ function Sidebar({
                     {currentLocation?.location_name}
                 </div>
                 <div className="location-star-rating">
-                    <Rating rating={3.6}/>
-                    ({3.6})
+                    <Rating rating={calculateRating()}/>
+                    ({currentReviews.length})
                 </div>
                 <button type="button" className="edit-sidebar-button" onClick={openEditLocation}>    
                     <i className="fa fa-edit"></i>
@@ -64,13 +69,19 @@ function Sidebar({
                 </button>
             </div>
             <div className="restrooms">
+                <div className="sidebar-item-title">
+                    Restrooms
+                </div>
                 {currentRestrooms.map((restroom, index) => 
                     <RestroomLabel key={index} restroom={restroom} addReview={() => {openReview(restroom.restroom_id!)}}/>
                 )}
             </div>
             <div className="reviews">
-                Reviews
-                {currentReviews.map((review, index) => 
+                <div className="sidebar-item-title">
+                    Reviews
+                </div>
+                {currentReviews.length == 0 ? "No Reviews" :
+                currentReviews.map((review, index) => 
                     <ReviewElement key={index} review={review}/>
                 )}
             </div>

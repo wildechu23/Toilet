@@ -7,11 +7,12 @@ import { postReview } from '../utils/toilets_api';
 interface ReviewOverlayProps {
     location: LocationDataProps | undefined,
     restroom: RestroomProps | undefined,
-    closeReview: () => void
+    closeReview: () => void,
+    updateReviews: (id: number) => void,
 }
 
 
-function ReviewOverlay({ location, restroom, closeReview }: ReviewOverlayProps) {
+function ReviewOverlay({ location, restroom, closeReview, updateReviews }: ReviewOverlayProps) {
     const [starRating, setStarRating] = useState<number>(0);
     const [reviewText, setReviewText] = useState<string>("");
 
@@ -22,7 +23,11 @@ function ReviewOverlay({ location, restroom, closeReview }: ReviewOverlayProps) 
     function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if(location && restroom && restroom.restroom_id) {
-            postReview(location?.location_id, restroom.restroom_id, starRating, reviewText);
+            postReview(location?.location_id, restroom.restroom_id, starRating, reviewText)
+            .then(() => {
+                updateReviews(location.location_id);
+            })
+            .catch((err) => console.error(err));
         }
         exitOverlay();
     }

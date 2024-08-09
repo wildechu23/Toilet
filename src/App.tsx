@@ -77,6 +77,10 @@ function App() {
         setReviewOpen(false);
     }
 
+    const updateReviews = async (id: number) => {
+        const data = await fetchReviews(id);
+        setCurrentReviews(data);
+    };
 
     return (
         <>
@@ -123,6 +127,7 @@ function App() {
                     location={currentLocation}
                     restroom={currentRestrooms.find(restroom => restroom.restroom_id == restroomId)}
                     closeReview={closeReview}
+                    updateReviews={updateReviews}
                 />
             }
         </>
